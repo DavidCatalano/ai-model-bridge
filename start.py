@@ -1,7 +1,7 @@
+import argparse
+import os
 import subprocess
 import sys
-import os
-import argparse
 from typing import Optional
 
 
@@ -30,6 +30,7 @@ def start_interactive_shell() -> None:
 
 
 def main() -> None:
+    print(f"Using Python interpreter: {sys.executable}")
     parser = argparse.ArgumentParser(description="AI Model Bridge setup script.")
     parser.add_argument("--setup", action="store_true", help="Run setup tasks.")
     parser.add_argument("--interactive", action="store_true", help="Drop into an interactive shell.")

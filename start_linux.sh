@@ -17,7 +17,7 @@ case "${OS_ARCH}" in
 esac
 
 # Define paths and URLs
-INSTALL_DIR="$(pwd)/installer_files"
+INSTALL_DIR="/opt/ai-model-bridge/miniconda"
 CONDA_ROOT_PREFIX="$INSTALL_DIR/conda"
 INSTALL_ENV_DIR="$INSTALL_DIR/env"
 MINICONDA_DOWNLOAD_URL="https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-${OS_ARCH}.sh"
