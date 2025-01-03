@@ -13,6 +13,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,rw \
 
 RUN groupadd -g ${APP_GID} modelbridge && \
     useradd -u ${APP_GID} -g modelbridge -m modelbridge && \
+    mkdir -p /opt/ai-model-bridge && \
+    chown -R modelbridge:modelbridge /opt/ai-model-bridge && \
     chown -R modelbridge:modelbridge /home/app
 USER modelbridge:modelbridge
 
