@@ -4,7 +4,6 @@ services:
     build:
       context: .
       args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN} # delete after repo is public
         APP_GID: ${APP_GID:-24060} 
         APP_UID: ${APP_UID-24060}
     env_file:

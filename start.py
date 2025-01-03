@@ -12,7 +12,7 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
         raise FileNotFoundError(f"Missing: {requirements_file}")
 
     pip_upgrade_cmd = [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
-    install_cmd = [sys.executable, "-m", "pip", "install", "-r", requirements_file]
+    install_cmd = [sys.executable, "-m", "pip", "install", "--quiet", "--no-input", "-r", requirements_file]
 
     if verbose:
         print("Running:", " ".join(pip_upgrade_cmd))

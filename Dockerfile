@@ -17,10 +17,8 @@ RUN groupadd -g ${APP_GID} modelbridge && \
 USER modelbridge:modelbridge
 
 # RUN git clone https://github.com/DavidCatalano/ai-model-bridge.git
-ARG GITHUB_TOKEN="${GITHUB_TOKEN}"
-RUN git clone https://$GITHUB_TOKEN@github.com/DavidCatalano/ai-model-bridge.git
-
-
+ARG CACHEBUST=1
+RUN git clone --depth=1 https://github.com/DavidCatalano/ai-model-bridge.git
 
 WORKDIR /home/app/ai-model-bridge
 RUN ./start_linux.sh --setup --verbose
