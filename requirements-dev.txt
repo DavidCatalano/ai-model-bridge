@@ -1,0 +1,15 @@
+# Development tools
+ruff
+black
+mypy
+
+# Optional testing tools
+pytest
+pytest-cov
+
+# Type stubs (for strict type checking with mypy)
+types-requests
+types-setuptools
+
+# Documentation
+sphinx-autodoc-typehints

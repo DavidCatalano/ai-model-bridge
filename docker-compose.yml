@@ -1,0 +1,28 @@
+services:
+  modelbridge:
+    container_name: modelbridge
+    build:
+      context: .
+      args:
+        APP_GID: ${APP_GID:-24060} 
+        APP_UID: ${APP_UID-24060}
+    env_file:
+      - .env
+    user: "${APP_RUNTIME_UID:-24060}:${APP_RUNTIME_GID:-24060}"
+    stdin_open: true
+    tty: true
+    volumes:
+      # Application code via git or superceded by local copy using devcontainer.json
+      # Add path to application model folders below
+      # Volume maps must match to ensure host symlinks work automatically on the container
+      - /data/models:/data/models/:rw
+      - /data/LLM/ollama/:/data/LLM/ollama/:rw
+      - /data/LLM/kobold/:/data/LLM/kobold/:rw
+      - /data/LLM/oobabooga/:/data/LLM/oobabooga/:rw
+    environment:
+      PYTHONPATH: "/home/app/ai-model-bridge"
+      PYTHONDONTWRITEBYTECODE: "1"
+networks:
+  default:
+    name: ai_net
+    external: true
