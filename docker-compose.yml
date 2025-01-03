@@ -4,15 +4,16 @@ services:
     build:
       context: .
       args:
+        GITHUB_TOKEN: ${GITHUB_TOKEN} # delete after repo is public
         APP_GID: ${APP_GID:-24060} 
         APP_UID: ${APP_UID-24060}
     env_file:
       - .env
-    user: "${APP_RUNTIME_UID:-24060}:${APP_RUNTIME_GID:-24060}"
+    user: "${APP_RUNTIME_GID:-24060}:${APP_RUNTIME_GID:-24060}"
     stdin_open: true
     tty: true
     volumes:
-      # Application code via git or superceded by local copy using devcontainer.json
+      # Application code sourced from git or superceded by local copy using devcontainer.json
       # Add path to application model folders below
       # Volume maps must match to ensure host symlinks work automatically on the container
       - /data/models:/data/models/:rw
@@ -22,6 +23,8 @@ services:
     environment:
       PYTHONPATH: "/home/app/ai-model-bridge"
       PYTHONDONTWRITEBYTECODE: "1"
+    group_add: # delete section if running container as root
+      - 6972 # Add the GID for oobabooga-group
 networks:
   default:
     name: ai_net

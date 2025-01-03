@@ -26,7 +26,7 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
 def start_interactive_shell() -> None:
     """Drop the user into an interactive shell."""
     print("Entering interactive shell...")
-    os.execv("/bin/bash", ["/bin/bash"])
+    # os.execv("/bin/bash", ["/bin/bash"])
 
 
 def main() -> None:

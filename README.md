@@ -32,7 +32,7 @@
 2. Modify config.toml with the file paths and other settings
 3. Copy and edit .env.example
     ```
-    cp .env.example .env
+    cp env.example .env
     ```
     #### File Permissions and GID Setup
       To ensure compatibility when sharing files between containers:
@@ -44,6 +44,21 @@
          APP_RUNTIME_GID=24060
          ```
          - This promotes security best practices, ensures consistent access and avoids permission issues.
+
+         - ~~Add the `modelbridge` user and group on the host machine where the models will be saved. Change the GID if you have a common value across groups~~
+            ~~
+            ~~sudo groupadd -g 24060 modelbridge~~
+            ~~sudo useradd -m -u 24060 -g 24060 modelbridge~~
+            ~~sudo usermod -a -G 24060~~
+            ~~
+                    ~~^ adds your user to the group so you can see and manage files in /data/models~~
+            ~~Now add user 24060 to any existing groups, for example the oobabooga group~~
+            ~~`sudo usermod -a -G oobabooga-group modelbridge`~~
+            Add group IDs to docker-compose.yml in the `group-add` section
+            tip: If unknown group name or id use `ls -l` for the name and `getent group oobabooga-group` for the group id
+            Troubleshooting (within container) verify: `groups modelbridge` should yield: `modelbridge : modelbridge oobabooga-group`
+            repeat for any/every other group that is required for ModelBridge to manage the files on system
+
 
       2. **Fallback to Root**:
          - If other containers are running as `root` or no common GID is used, leave `APP_RUNTIME_GID` blank.
