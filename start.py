@@ -11,16 +11,41 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
         print(f"Requirements file {requirements_file} not found.")
         raise FileNotFoundError(f"Missing: {requirements_file}")
 
-    pip_upgrade_cmd = [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
-    install_cmd = [sys.executable, "-m", "pip", "install", "--quiet", "--no-input", "-r", requirements_file]
+    # Log environment and Python details
+    with open("install.log", "w") as log_file:
+        log_file.write(f"Python executable: {sys.executable}\n")
+        log_file.write(f"Pip version: {subprocess.run([sys.executable, '-m', 'pip', '--version'], capture_output=True, text=True).stdout.strip()}\n")
+        log_file.write("Environment variables:\n")
+        log_file.write("\n".join([f"{k}={v}" for k, v in os.environ.items()]) + "\n\n")
 
+        # Capture the current sys.path for debugging
+        log_file.write("sys.path:\n")
+        log_file.write("\n".join(sys.path) + "\n\n")
+
+    # Upgrade pip
+    pip_upgrade_cmd = [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
     if verbose:
         print("Running:", " ".join(pip_upgrade_cmd))
-    subprocess.run(pip_upgrade_cmd, check=True)
+    subprocess.run(pip_upgrade_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
+    # Install dependencies
+    install_cmd = [sys.executable, "-m", "pip", "install", "-r", requirements_file]
     if verbose:
         print("Running:", " ".join(install_cmd))
-    subprocess.run(install_cmd, check=True)
+    result = subprocess.run(install_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+
+    # Log pip installation output
+    with open("install.log", "a") as log_file:
+        log_file.write("Pip install output:\n")
+        log_file.write(result.stdout.decode())
+        log_file.write("\nPip install errors:\n")
+        log_file.write(result.stderr.decode())
+
+    # Confirm installation by listing installed packages
+    installed_packages = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True)
+    with open("install.log", "a") as log_file:
+        log_file.write("\nInstalled packages:\n")
+        log_file.write(installed_packages.stdout)
 
 
 def start_interactive_shell() -> None:

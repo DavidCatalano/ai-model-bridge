@@ -21,7 +21,7 @@ services:
       - /data/LLM/kobold/:/data/LLM/kobold/:rw
       - /data/LLM/oobabooga/:/data/LLM/oobabooga/:rw
     environment:
-      PYTHONPATH: "/home/app/ai-model-bridge"
+      PYTHONPATH: "/opt/ai-model-bridge"
       PYTHONDONTWRITEBYTECODE: "1"
     group_add: # delete section if running container as root
       - 6972 # Add the GID for oobabooga-group
