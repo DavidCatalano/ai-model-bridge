@@ -44,23 +44,13 @@
          APP_RUNTIME_GID=24060
          ```
          - This promotes security best practices, ensures consistent access and avoids permission issues.
-
-         - ~~Add the `modelbridge` user and group on the host machine where the models will be saved. Change the GID if you have a common value across groups~~
-            ~~
-            ~~sudo groupadd -g 24060 modelbridge~~
-            ~~sudo useradd -m -u 24060 -g 24060 modelbridge~~
-            ~~sudo usermod -a -G 24060~~
-            ~~
-                    ~~^ adds your user to the group so you can see and manage files in /data/models~~
-            ~~Now add user 24060 to any existing groups, for example the oobabooga group~~
-            ~~`sudo usermod -a -G oobabooga-group modelbridge`~~
-            Add group IDs to docker-compose.yml in the `group-add` section
-            tip: If unknown group name or id use `ls -l` for the name and `getent group oobabooga-group` for the group id
-            Troubleshooting (within container) verify: `groups modelbridge` should yield: `modelbridge : modelbridge oobabooga-group`
-            repeat for any/every other group that is required for ModelBridge to manage the files on system
+         - Add group IDs to docker-compose.yml in the `group-add` section
+         - tip: If unknown group name or id use `ls -l` for the name and `getent group oobabooga-group` for the group id
+         - Troubleshooting (within container) verify: `groups modelbridge` should yield: `modelbridge : modelbridge oobabooga-group`
+         - repeat for any/every other group that is required for ModelBridge to manage the files on system
 
 
-      2. **Fallback to Root**:
+      2. **Fallback to Root (FUTURE)**:
          - If other containers are running as `root` or no common GID is used, leave `APP_RUNTIME_GID` blank.
          - ModelBridge will also run as `root`, ensuring it can access files created by `root` containers.
 
@@ -74,7 +64,7 @@
     ```
     docker-compose up
     ```
-    For now, this will land you in the interactive terminal
+    For now, either connect with VS Code to remote host container or bash in to the interactive terminal `docker exec -it modelbridge bash`
 
 ## Utilities Included
 - **[Ollama CLI](https://ollama.ai/)**: Manage Ollama-specific models.
@@ -107,12 +97,14 @@
 
 ### Application flow
 Container (base)
+```
 → Dockerfile (future: optional)
   → start_linux.sh / sets up miniconda/env (future: multi OS support)
     → start.py / python setup (requirements.txt) and routes based on args
 Container (remote dev)
       ↑ all of the above, plus...
       → devcontainer.json / adds requirements-dev.txt
+```
 
 ## Contributions
 My primary contribution and motivation for this project focuses on Linux and remote Docker container setups. Contributions are welcome to expand and refine the project for additional use cases, including:

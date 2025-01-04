@@ -3,9 +3,8 @@ line-length = 99
 exclude = ["migrations", "__pycache__"]
 extend-ignore = ["F403"]  # Ignore 'import *'
 select = ["E", "W", "F"]  # Core linting rules
-# Enable isort functionality
+
 [tool.ruff.isort]
-known_third_party = ["requests", "numpy"]
-known_first_party = ["my_project"]
+known-third-party = ["requests", "numpy"]
+known-first-party = ["my_project"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-line_length = 99

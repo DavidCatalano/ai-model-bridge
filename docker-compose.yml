@@ -1,6 +1,7 @@
 services:
   modelbridge:
     container_name: modelbridge
+    hostname: modelbridge
     build:
       context: .
       args:
