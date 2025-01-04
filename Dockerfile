@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 
-# Set up working directory and build arguments
 WORKDIR /home/app
 ARG APP_GID="${APP_RUNTIME_GID:-24060}"
 
@@ -18,17 +17,25 @@ RUN groupadd -g ${APP_GID} modelbridge && \
     chown -R modelbridge:modelbridge /home/app
 USER modelbridge:modelbridge
 
-# RUN git clone https://github.com/DavidCatalano/ai-model-bridge.git
 ARG CACHEBUST=1
 RUN git clone --depth=1 https://github.com/DavidCatalano/ai-model-bridge.git
 
 WORKDIR /home/app/ai-model-bridge
 RUN ./start_linux.sh --setup --verbose
 
-# CMD ["bash", "-c", "umask 0002 && export HOME=/home/app/ai-model-bridge && ./start_linux.sh --interactive"]
-CMD ["bash", "-c", "umask 0002 && export HOME=/home/app/ai-model-bridge && ./start_linux.sh --interactive && /bin/bash"]
 
-# DEBUG
-# CMD ["bash", "-c", "umask 0002 && export HOME=/home/app/ai-model-bridge && ./start_linux.sh --interactive || true && /bin/bash"]
+ENTRYPOINT ["/home/app/ai-model-bridge/entrypoint.sh"]
+
+###### ENTRYPOINT ["/bin/bash", "-c", "source /home/app/ai-model-bridge/entrypoint.sh \"$@\"", "--"]
+
+# Set ENTRYPOINT to source the script for environment setup
+#ENTRYPOINT ["/bin/bash", "-c", "source /home/app/ai-model-bridge/start_linux.sh \"$@\"", "--"]
+
+# CMD for default behavior
+CMD ["--setup"]
 
 
+
+
+
+# CMD ["bash", "-c", "umask 0002; export HOME=/home/app/ai-model-bridge; ./start_linux.sh --interactive"]

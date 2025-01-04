@@ -7,25 +7,36 @@ case "$1" in
     "build-no-cache")
         docker-compose build --no-cache
         ;;
-    "setup")
-    docker exec -it modelbridge bash -c "
-        export PATH=\"\$PATH:\$HOME/.local/bin\" && \
-        python -m pip install --upgrade pip && \
-        pip install -r requirements-dev.txt && \
-        ruff check . --fix && \
-        if ! grep -Fxq 'export PATH=\"\$PATH:/home/app/ai-model-bridge/scripts\"' ~/.bashrc; then
-            echo 'export PATH=\"\$PATH:/home/app/ai-model-bridge/scripts\"' >> ~/.bashrc;
-        fi
-    " || {
-        echo 'Failed to set up the development environment.'
-        exit 1
-    }
-    ;;
+    "setup-pip")
+        docker exec -it modelbridge bash -c "
+            export PATH=\"\$PATH:\$HOME/.local/bin\" && \
+            python -m pip install --upgrade pip && \
+            pip install -r requirements-dev.txt && \
+            ruff check . --fix
+        " || {
+            echo 'Failed to set up the development environment.'
+            exit 1
+        }
+        ;;
+    "setup-bash")
+        docker exec -it modelbridge bash -c "
+            export PATH=\"\$PATH:\$HOME/.local/bin\" && \
+            if ! grep -Fxq 'source /opt/ai-model-bridge/miniconda/conda/bin/activate' ~/.bashrc; then
+                echo 'source /opt/ai-model-bridge/miniconda/conda/bin/activate' >> ~/.bashrc;
+            fi
+            if ! grep -Fxq 'conda activate /opt/ai-model-bridge/miniconda/env' ~/.bashrc; then
+                echo 'conda activate /opt/ai-model-bridge/miniconda/env' >> ~/.bashrc;
+            fi
+        " || {
+            echo 'Failed to set up the development environment.'
+            exit 1
+        }
+        ;;
     "bash")
-        docker exec -it modelbridge bash -c "source /opt/ai-model-bridge/miniconda/conda/bin/activate && conda activate /opt/ai-model-bridge/miniconda/env && bash"
+        docker exec -it modelbridge bash
         ;;
     *)
-        echo "Usage: $0 {build-repo|build-no-cache|setup|bash}"
+        echo "Usage: $0 {build-repo|build-no-cache|setup-pip|setup-bash|bash}"
         exit 1
         ;;
 esac

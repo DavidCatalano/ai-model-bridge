@@ -9,11 +9,11 @@ huggingface-hub
 # sentencepiece
 
 # GGUF-related tools
-llama-cpp-python
+#llama-cpp-python
 
 # Optional tools for interactive workflows
 #gradio
 
 # General utilities
-rich
-python-dotenv
+#rich
+#python-dotenv

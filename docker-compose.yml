@@ -6,7 +6,7 @@ services:
       context: .
       args:
         APP_GID: ${APP_GID:-24060} 
-        APP_UID: ${APP_UID-24060}
+        APP_UID: ${APP_UID:-24060}
     env_file:
       - .env
     user: "${APP_RUNTIME_GID:-24060}:${APP_RUNTIME_GID:-24060}"

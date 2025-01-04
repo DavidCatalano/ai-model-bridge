@@ -50,8 +50,14 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
 
 def start_interactive_shell() -> None:
     """Drop the user into an interactive shell."""
+    # Get the active Conda environment name
+    conda_env = os.environ.get("CONDA_DEFAULT_ENV", "")
+    ps1_prefix = f"({conda_env}) " if conda_env else ""
+    print(f'Setting prompt: {ps1_prefix} {os.environ.get("PS1", "")}')
+    # Update the PS1 environment variable
+    os.environ["PS1"] = ps1_prefix + os.environ.get("PS1", "")
     print("Entering interactive shell...")
-    # os.execv("/bin/bash", ["/bin/bash"])
+    os.execv("/bin/bash", ["/bin/bash"])
 
 
 def main() -> None:
