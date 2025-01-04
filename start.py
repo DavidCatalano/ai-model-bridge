@@ -2,7 +2,6 @@ import argparse
 import os
 import subprocess
 import sys
-from typing import Optional
 
 
 def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
@@ -11,51 +10,48 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
         print(f"Requirements file {requirements_file} not found.")
         raise FileNotFoundError(f"Missing: {requirements_file}")
 
-    # Log environment and Python details
-    with open("install.log", "w") as log_file:
-        log_file.write(f"Python executable: {sys.executable}\n")
-        log_file.write(f"Pip version: {subprocess.run([sys.executable, '-m', 'pip', '--version'], capture_output=True, text=True).stdout.strip()}\n")
-        log_file.write("Environment variables:\n")
-        log_file.write("\n".join([f"{k}={v}" for k, v in os.environ.items()]) + "\n\n")
+    if verbose:
+        # Log environment and Python details only if verbose is enabled
+        with open("install.log", "w") as log_file:
+            log_file.write(f"Python executable: {sys.executable}\n")
+            log_file.write(
+                f"Pip version: {subprocess.run([sys.executable, '-m', 'pip', '--version'], capture_output=True, text=True).stdout.strip()}\n"
+            )
+            log_file.write("Environment variables:\n")
+            log_file.write("\n".join([f"{k}={v}" for k, v in os.environ.items()]) + "\n\n")
 
-        # Capture the current sys.path for debugging
-        log_file.write("sys.path:\n")
-        log_file.write("\n".join(sys.path) + "\n\n")
+            # Capture the current sys.path for debugging
+            log_file.write("sys.path:\n")
+            log_file.write("\n".join(sys.path) + "\n\n")
 
-    # Upgrade pip
+    # Install dependencies
     pip_upgrade_cmd = [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
     if verbose:
         print("Running:", " ".join(pip_upgrade_cmd))
     subprocess.run(pip_upgrade_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
-    # Install dependencies
     install_cmd = [sys.executable, "-m", "pip", "install", "-r", requirements_file]
     if verbose:
         print("Running:", " ".join(install_cmd))
     result = subprocess.run(install_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
-    # Log pip installation output
-    with open("install.log", "a") as log_file:
-        log_file.write("Pip install output:\n")
-        log_file.write(result.stdout.decode())
-        log_file.write("\nPip install errors:\n")
-        log_file.write(result.stderr.decode())
+    if verbose:
+        # Log pip installation output
+        with open("install.log", "a") as log_file:
+            log_file.write("Pip install output:\n")
+            log_file.write(result.stdout.decode())
+            log_file.write("\nPip install errors:\n")
+            log_file.write(result.stderr.decode())
 
-    # Confirm installation by listing installed packages
-    installed_packages = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True)
-    with open("install.log", "a") as log_file:
-        log_file.write("\nInstalled packages:\n")
-        log_file.write(installed_packages.stdout)
+        # Confirm installation by listing installed packages
+        installed_packages = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True)
+        with open("install.log", "a") as log_file:
+            log_file.write("\nInstalled packages:\n")
+            log_file.write(installed_packages.stdout)
 
 
 def start_interactive_shell() -> None:
     """Drop the user into an interactive shell."""
-    # Get the active Conda environment name
-    conda_env = os.environ.get("CONDA_DEFAULT_ENV", "")
-    ps1_prefix = f"({conda_env}) " if conda_env else ""
-
-    # Update the PS1 environment variable
-    os.environ["PS1"] = ps1_prefix + os.environ.get("PS1", "")
     print("Entering interactive shell...")
     os.execv("/bin/bash", ["/bin/bash"])
 

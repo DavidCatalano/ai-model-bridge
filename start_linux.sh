@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-echo "Arguments passed to start_linux.sh: $@"
+if [[ " $@ " =~ " --verbose " ]]; then
+    echo "Arguments passed to start_linux.sh: $@"
+    echo "Current umask in entrypoint: $(umask)"
+fi
+    
 
 # Navigate to script directory
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -56,21 +60,3 @@ source "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 conda activate "$INSTALL_ENV_DIR"
 
 python start.py "$@"
-
-
-# # Handle interactive mode
-# if [[ "$1" == "--interactive" ]]; then
-#     echo "Interactive mode enabled."
-#     exec bash --login
-#     # return 0  # Exit the script without terminating the shell
-# fi
-
-# # Run the application
-# python start.py "$@"
-
-# if [[ "$1" != "--interactive" ]]; then
-#     echo "non-interactive mode enabled"
-#     python start.py "$@"
-#     exit 0
-# fi
-# echo "Interactive mode enabled."
