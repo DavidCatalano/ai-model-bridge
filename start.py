@@ -48,16 +48,30 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
         log_file.write(installed_packages.stdout)
 
 
+# def start_interactive_shell() -> None:
+#     """Drop the user into an interactive shell."""
+#     # Get the active Conda environment name
+#     conda_env = os.environ.get("CONDA_DEFAULT_ENV", "")
+#     ps1_prefix = f"({conda_env}) " if conda_env else ""
+#     print(f'Setting prompt: {ps1_prefix} {os.environ.get("PS1", "")}')
+#     # Update the PS1 environment variable
+#     os.environ["PS1"] = ps1_prefix + os.environ.get("PS1", "")
+#     print("Entering interactive shell...")
+#     os.execv("/bin/bash", ["/bin/bash"])
 def start_interactive_shell() -> None:
     """Drop the user into an interactive shell."""
     # Get the active Conda environment name
     conda_env = os.environ.get("CONDA_DEFAULT_ENV", "")
     ps1_prefix = f"({conda_env}) " if conda_env else ""
-    print(f'Setting prompt: {ps1_prefix} {os.environ.get("PS1", "")}')
+    print(f'Setting prompt: {ps1_prefix}{os.environ.get("PS1", "")}')
+    
     # Update the PS1 environment variable
     os.environ["PS1"] = ps1_prefix + os.environ.get("PS1", "")
+    
     print("Entering interactive shell...")
-    os.execv("/bin/bash", ["/bin/bash"])
+    
+    # Pass the updated environment to the new Bash shell
+    os.execv("/usr/bin/env", ["env", "bash", "--login"])
 
 
 def main() -> None:
