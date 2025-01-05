@@ -1,0 +1,16 @@
+[storage]
+# HOT: Fastest available storage (e.g., NVMe, 10 GbE NAS, <1ms latency)
+hot_storage = "/fast/models"
+# WARM: Secondary storage (e.g., SATA SSD, HDD, 10ms+ latency)
+warm_storage = "/data/models"
+# COLD: Archive/backup storage (e.g., HDD, 1 GbE NAS, 100ms+ latency)
+cold_storage = "/archive/models"
+# Storage limits in gigabytes
+hot_storage_limit = 500
+warm_storage_limit = 2000
+
+[project_dirs]
+# AI project directories (absolute paths)
+ollama_home = "/data/LMM/ollama"
+koboldcpp_home = "/data/LMM/koboldcpp"
+oogabooga_home = "/data/LMM/oogabooga"
