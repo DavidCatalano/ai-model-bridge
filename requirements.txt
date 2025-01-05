@@ -14,6 +14,7 @@ transformers
 
 # Interactive workflows
 gradio
+watchfiles
 
 # General utilities
 #click
