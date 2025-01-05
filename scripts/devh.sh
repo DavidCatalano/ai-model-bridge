@@ -7,14 +7,14 @@ case "$1" in
     "build-no-cache")
         docker-compose build --no-cache
         ;;
-    "bash")
+    "cli")
         docker-compose run --rm modelbridge --interactive $2
         ;;
     "attach")
         docker exec -it modelbridge bash        
         ;;
     *)
-        echo "Usage: $0 {build-repo|setup-pip|setup-bash|bash}"
+        echo "Usage: $0 {build-repo|build-no-cache|cli|attach}"
         exit 1
         ;;
 esac
