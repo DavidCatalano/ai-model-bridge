@@ -19,35 +19,12 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
             )
             log_file.write("Environment variables:\n")
             log_file.write("\n".join([f"{k}={v}" for k, v in os.environ.items()]) + "\n\n")
-
-            # Capture the current sys.path for debugging
             log_file.write("sys.path:\n")
             log_file.write("\n".join(sys.path) + "\n\n")
 
     # Install dependencies
-    pip_upgrade_cmd = [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
-    if verbose:
-        print("Running:", " ".join(pip_upgrade_cmd))
-    subprocess.run(pip_upgrade_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-
-    install_cmd = [sys.executable, "-m", "pip", "install", "-r", requirements_file]
-    if verbose:
-        print("Running:", " ".join(install_cmd))
-    result = subprocess.run(install_cmd, check=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-
-    if verbose:
-        # Log pip installation output
-        with open("install.log", "a") as log_file:
-            log_file.write("Pip install output:\n")
-            log_file.write(result.stdout.decode())
-            log_file.write("\nPip install errors:\n")
-            log_file.write(result.stderr.decode())
-
-        # Confirm installation by listing installed packages
-        installed_packages = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True)
-        with open("install.log", "a") as log_file:
-            log_file.write("\nInstalled packages:\n")
-            log_file.write(installed_packages.stdout)
+    subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements_file], check=True)
 
 
 def start_interactive_shell() -> None:
@@ -61,9 +38,20 @@ def keep_container_alive() -> None:
     print("Keeping the container alive. Press Ctrl+C to exit.")
     try:
         while True:
-            pass  # Infinite loop to keep the container running
+            pass
     except KeyboardInterrupt:
         print("Exiting nowebui mode.")
+
+
+def start_webui() -> None:
+    """Start the Gradio-based WebUI."""
+    script_path = os.path.join(os.path.dirname(__file__), "web", "app.py")
+    if not os.path.exists(script_path):
+        print(f"WebUI script not found at {script_path}")
+        sys.exit(1)
+
+    print(f"Starting Gradio WebUI from {script_path}")
+    subprocess.run([sys.executable, script_path], check=True)
 
 
 def main() -> None:
@@ -73,6 +61,7 @@ def main() -> None:
     parser.add_argument("--interactive", action="store_true", help="Drop into an interactive shell.")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
     parser.add_argument("--nowebui", action="store_true", help="Keep the container alive without running a WebUI.")
+    parser.add_argument("--webui", action="store_true", help="Launch the Gradio WebUI.")
 
     args = parser.parse_args()
 
@@ -91,7 +80,10 @@ def main() -> None:
         if args.nowebui:
             keep_container_alive()
 
-        if not args.setup and not args.interactive and not args.nowebui:
+        if args.webui:
+            start_webui()
+
+        if not any([args.setup, args.interactive, args.nowebui, args.webui]):
             parser.print_help()
 
     except Exception as e:

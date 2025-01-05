@@ -1,19 +1,21 @@
-# General dependencies for model management and CLI tools
+# General dependencies
 huggingface-hub
+huggingface_hub[cli]
 
-# Tools for handling model conversion and optimization
-# transformers
+# Model conversion and optimization
+transformers
 # tokenizers
 # torch
 # onnxruntime
 # sentencepiece
 
 # GGUF-related tools
-#llama-cpp-python
+llama-cpp-python
 
-# Optional tools for interactive workflows
-#gradio
+# Interactive workflows
+gradio
 
 # General utilities
+#click
 #rich
 #python-dotenv
