@@ -16,13 +16,13 @@ def setup_environment():
 def create_app():
     """Create and configure the Gradio application."""
     with gr.Blocks(theme=gr.themes.Soft()) as app:
-        gr.Markdown("# Model Management Tool")
+        gr.Markdown("# ai-model-bridge[webui]")
         
         # Main content area using Tabs for better organization
         with gr.Tabs():
             with gr.Tab("Home", id="home"):
                 gr.Markdown(
-                    "Welcome to the Model Management Tool!",
+                    "**ModelBridge** streamlines the file management of large language models and image generation models through efficient organization and symbolic linking. This containerized solution prevents redundant downloads across different frameworks and applications while optimizing model loading performance through intelligent storage management across mixed drive environments (mechanical and NVMe). ModelBridge simplifies the workflow for text generation and generative applications, providing a unified command-line interface for model organization and optimization. (or aspires to ;)",
                     elem_id="main-content"
                 )
             
