@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 case "$1" in
+    "conda")
+        source /opt/ai-model-bridge/miniconda/conda/bin/activate && conda activate /opt/ai-model-bridge/miniconda/env
+        ;;
     "bashrc")
         echo "Appending Conda environment activation to ~/.bashrc"
         echo "source /opt/ai-model-bridge/miniconda/conda/bin/activate && conda activate /opt/ai-model-bridge/miniconda/env" >> ~/.bashrc

@@ -6,7 +6,7 @@ ARG APP_GID="${APP_RUNTIME_GID:-24060}"
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,rw \
     apt update && \
     apt install --no-install-recommends -y \
-    curl git wget openssh-client rsync jq git-lfs vim zip \
+    cmake curl git wget openssh-client rsync jq git-lfs vim zip \
     build-essential python3-dev cmake libomp-dev whiptail && \
     rm -rf /var/lib/apt/lists/*
 
