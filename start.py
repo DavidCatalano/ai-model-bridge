@@ -22,10 +22,20 @@ def install_dependencies(requirements_file: str, verbose: bool = False) -> None:
             log_file.write("sys.path:\n")
             log_file.write("\n".join(sys.path) + "\n\n")
 
-    # Install dependencies
-    subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True)
-    subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements_file], check=True)
+    try:
+        # Upgrade pip
+        subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True)
 
+        # Install dependencies
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements_file], check=True)
+
+    except subprocess.CalledProcessError as e:
+        # Handle pip failures
+        print(f"Error: Pip command failed with exit code {e.returncode}")
+        print(f"Command: {e.cmd}")
+        print(f"Output: {e.output}")
+        print("Failed to install dependencies. Check the requirements file and your system configuration.")
+        raise  # Re-raise the exception to propagate it upward
 
 def start_interactive_shell() -> None:
     """Drop the user into an interactive shell."""

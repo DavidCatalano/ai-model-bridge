@@ -10,7 +10,7 @@ transformers
 # sentencepiece
 
 # GGUF-related tools
-llama-cpp-python
+# llama-cpp-python
 
 # Interactive workflows
 gradio

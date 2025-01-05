@@ -10,6 +10,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,rw \
     build-essential python3-dev cmake libomp-dev whiptail && \
     rm -rf /var/lib/apt/lists/*
 
+# ENV CMAKE_ARGS="-DGGML_USE_CPU_X86=ON -DGGML_USE_CPU_AARCH64=OFF"
+# ENV LLAMA_CPP_BUILD=1
+
 RUN groupadd -g ${APP_GID} modelbridge && \
     useradd -u ${APP_GID} -g modelbridge -m modelbridge && \
     mkdir -p /opt/ai-model-bridge && \
