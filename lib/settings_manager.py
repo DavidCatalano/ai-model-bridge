@@ -5,7 +5,7 @@ from typing import Any, Dict
 import tomlkit  # Supports comments
 
 # Path to the TOML configuration file
-CONFIG_FILE = Path("../config.toml")
+CONFIG_FILE = Path("config.toml")
 
 
 class SettingsManager:
