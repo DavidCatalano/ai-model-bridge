@@ -23,7 +23,7 @@ services:
     ports:
       - ${SERVER_PORT:-5555}:${SERVER_PORT:-5555}
     environment:
-      PYTHONPATH: "/opt/ai-model-bridge"
+      PYTHONPATH: "/home/app/ai-model-bridge"
       PYTHONDONTWRITEBYTECODE: "1"
     group_add: # delete section if running container as root
       - 6972 # Add the GID for oobabooga-group
