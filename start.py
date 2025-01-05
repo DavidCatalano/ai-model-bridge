@@ -56,12 +56,23 @@ def start_interactive_shell() -> None:
     os.execv("/bin/bash", ["/bin/bash"])
 
 
+def keep_container_alive() -> None:
+    """Keep the container alive."""
+    print("Keeping the container alive. Press Ctrl+C to exit.")
+    try:
+        while True:
+            pass  # Infinite loop to keep the container running
+    except KeyboardInterrupt:
+        print("Exiting nowebui mode.")
+
+
 def main() -> None:
     print(f"Using Python interpreter: {sys.executable}")
     parser = argparse.ArgumentParser(description="AI Model Bridge setup script.")
     parser.add_argument("--setup", action="store_true", help="Run setup tasks.")
     parser.add_argument("--interactive", action="store_true", help="Drop into an interactive shell.")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
+    parser.add_argument("--nowebui", action="store_true", help="Keep the container alive without running a WebUI.")
 
     args = parser.parse_args()
 
@@ -77,7 +88,10 @@ def main() -> None:
         if args.interactive:
             start_interactive_shell()
 
-        if not args.setup and not args.interactive:
+        if args.nowebui:
+            keep_container_alive()
+
+        if not args.setup and not args.interactive and not args.nowebui:
             parser.print_help()
 
     except Exception as e:

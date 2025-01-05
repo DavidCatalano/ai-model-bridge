@@ -24,4 +24,4 @@ WORKDIR /home/app/ai-model-bridge
 RUN ./start_linux.sh --setup --verbose
 
 ENTRYPOINT ["/home/app/ai-model-bridge/entrypoint.sh"]
-CMD ["--setup", "--verbose"]
+CMD ["--nowebui"]
