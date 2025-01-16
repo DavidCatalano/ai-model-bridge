@@ -17,9 +17,11 @@ services:
       # Add path to application model folders below
       # Volume maps must match to ensure host symlinks work automatically on the container
       - /data/models:/data/models/:rw
+      - /data/fast/:/data/fast/:rw
       - /data/LLM/ollama/:/data/LLM/ollama/:rw
       - /data/LLM/kobold/:/data/LLM/kobold/:rw
       - /data/LLM/oobabooga/:/data/LLM/oobabooga/:rw
+      - /data/LLM/huggingface/:/data/LLM/huggingface/:rw
     ports:
       - ${SERVER_PORT:-5555}:${SERVER_PORT:-5555}
     environment:

@@ -1,12 +1,12 @@
 [storage]
 # HOT: Fastest available storage (e.g., NVMe, 10 GbE NAS, <1ms latency)
-hot_storage = "/fast/models"
+hot_storage = "/data/fast/modelbridge"
 # WARM: Secondary storage (e.g., SATA SSD, HDD, 10ms+ latency)
 warm_storage = "/data/models"
 # COLD: Archive/backup storage (e.g., HDD, 1 GbE NAS, 100ms+ latency)
 cold_storage = "/archive/models"
 # Storage limits in gigabytes
-hot_storage_limit = 500
+hot_storage_limit = 996
 warm_storage_limit = 2000
 
 [project_dirs]
