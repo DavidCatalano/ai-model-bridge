@@ -26,7 +26,7 @@ esac
 INSTALL_DIR="/opt/ai-model-bridge/miniconda"
 CONDA_ROOT_PREFIX="$INSTALL_DIR/conda"
 INSTALL_ENV_DIR="$INSTALL_DIR/env"
-MINICONDA_DOWNLOAD_URL="https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-${ARCH}.sh"
+MINICONDA_DOWNLOAD_URL="https://repo.anaconda.com/miniconda/Miniconda3-py311_24.11.1-0-Linux-${ARCH}.sh"
 
 # Trap to clean up installer file in case of exit
 trap 'rm -f "$INSTALL_DIR/miniconda_installer.sh"' EXIT
