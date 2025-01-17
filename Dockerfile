@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,rw \
     apt update && \
     apt install --no-install-recommends -y \
     cmake curl git wget openssh-client rsync jq git-lfs vim zip \
-    build-essential python3-dev cmake libomp-dev whiptail && \
+    build-essential python3-dev libomp-dev whiptail nvidia-cuda-toolkit && \
     rm -rf /var/lib/apt/lists/*
 
 # ENV CMAKE_ARGS="-DGGML_USE_CPU_X86=ON -DGGML_USE_CPU_AARCH64=OFF"

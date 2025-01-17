@@ -4,10 +4,11 @@ huggingface_hub[cli]
 
 # Model conversion and optimization
 transformers
-# tokenizers
+exllamav2
+tokenizers
 # torch
-# onnxruntime
-# sentencepiece
+onnxruntime
+sentencepiece
 
 # GGUF-related tools
 # llama-cpp-python
@@ -17,6 +18,6 @@ gradio
 watchfiles
 
 # General utilities
-#click
+click
 #rich
 tomlkit

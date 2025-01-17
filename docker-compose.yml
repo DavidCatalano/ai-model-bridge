@@ -29,6 +29,13 @@ services:
       PYTHONDONTWRITEBYTECODE: "1"
     group_add: # delete section if running container as root
       - 6972 # Add the GID for oobabooga-group
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 networks:
   default:
     name: ai_net
